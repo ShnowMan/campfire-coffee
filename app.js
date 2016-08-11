@@ -11,3 +11,11 @@ pikePlaceMarket.getRandomCus = function() {
   var tempRandom = this.randomNum(this.minCustomer, this.maxCustomer);
   return tempRandom;
 };
+pikePlaceMarket.calcCupPerCus = function() {
+  var cupPerCus = (tempRandom * this.averageCup);
+  return cupPerCus;
+};
+pikePlaceMarket.calcPoundPerCus = function() {
+  var poundPerCus = (tempRandom * this.averagePound) + (cupPerCus / 16);
+  return poundPerCus;
+};
