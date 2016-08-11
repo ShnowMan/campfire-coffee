@@ -28,8 +28,12 @@ var pikePlaceMarket = {
   //     this.poundPerHour[i] += poundPerCus;
   //   };
   // },
-
+  generatePoundPerHour : function() {
+    for (var i = 0; i < this.customerPerHour.length; i++){
+      this.poundPerHour.push((this.customerPerHour[i] * this.averagePound) + (cupPerCus / 16));
+    };
+  },
 };
 pikePlaceMarket.generateCustomerPerHour();
 pikePlaceMarket.generateCupPerHour();
-// pikePlaceMarket.generatePoundPerHour();
+pikePlaceMarket.generatePoundPerHour();
