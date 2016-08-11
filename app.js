@@ -12,26 +12,24 @@ var pikePlaceMarket = {
     return Math.floor(Math.random() * (max - min) + min);
   },
   generateCustomerPerHour : function() {
-    var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
-    return oneHourOfCustomers;
     for (var i = 0; i < 15; i++) {
-      this.customerPerHour[i] += oneHourOfCustomers;
+      var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
+      this.customerPerHour.push(oneHourOfCustomers);
     }
   },
   generateCupPerHour : function() {
-    var cupPerCus = (oneHourOfCustomers * this.averageCup);
-    for (var i = 0; i < 15; i ++){
-      this.cupPerHour[i] += cupPerCus;
+    for (var i = 0; i < this.customerPerHour.length; i++) {
+      this.cupPerHour.push(this.customerPerHour[i] * this.averageCup);
     };
   },
-  generatePoundPerHour : function() {
-    var poundPerCus = (oneHourOfCustomers * this.averagePound) + (cupPerCus / 16);
-    for (var i = 0; i < 15; i ++){
-      this.poundPerHour[i] += poundPerCus;
-    };
-  },
+  // generatePoundPerHour : function() {
+  //   var poundPerCus = (oneHourOfCustomers * this.averagePound) + (cupPerCus / 16);
+  //   for (var i = 0; i < 15; i ++){
+  //     this.poundPerHour[i] += poundPerCus;
+  //   };
+  // },
 
 };
 pikePlaceMarket.generateCustomerPerHour();
 pikePlaceMarket.generateCupPerHour();
-pikePlaceMarket.generatePoundPerHour();
+// pikePlaceMarket.generatePoundPerHour();
