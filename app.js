@@ -13,19 +13,20 @@ var pikePlaceMarket = {
   },
   generateCustomerPerHour : function() {
     var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
-    for (var i; i < 15; i++) {
+    return oneHourOfCustomers;
+    for (var i = 0; i < 15; i++) {
       this.customerPerHour[i] += oneHourOfCustomers;
     }
   },
   generateCupPerHour : function() {
     var cupPerCus = (oneHourOfCustomers * this.averageCup);
-    for (var i; i < 15; i ++){
+    for (var i = 0; i < 15; i ++){
       this.cupPerHour[i] += cupPerCus;
     };
   },
   generatePoundPerHour : function() {
     var poundPerCus = (oneHourOfCustomers * this.averagePound) + (cupPerCus / 16);
-    for (var i; i < 15; i ++){
+    for (var i = 0; i < 15; i ++){
       this.poundPerHour[i] += poundPerCus;
     };
   },
