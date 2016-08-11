@@ -1,26 +1,36 @@
-var time =
-  ['6:00','7:00','8:00','9:00',
-  '10:00','11:00','12:00','13:00',
-  '14:00','15:00','16:00','17:00',
-  '18:00','19:00','20:00'];
 var pikePlaceMarket = {
   minCustomer: 14,
   maxCustomer: 35,
   averageCup: 1.2,
   averagePound: 0.34,
+  customerPerHour : [],
+  cupPerHour : [],
+  poundPerHour : [],
+  cupTotal : 0,
+  poundTotal : 0,
   randomNum : function(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   },
-  getRandomCus : function() {
-    var tempRandomPPM = this.randomNum(this.minCustomer, this.maxCustomer);
-    return tempRandomPPM;
+  generateCustomerPerHour : function() {
+    var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
+    for (var i; i < 15; i++) {
+      this.customerPerHour[i] += oneHourOfCustomers;
+    }
   },
-  calcCupPerCus : function() {
-    var cupPerCusPPM = (tempRandomPPM * this.averageCup);
-    return cupPerCusPPM;
+  generateCupPerHour : function() {
+    var cupPerCus = (oneHourOfCustomers * this.averageCup);
+    for (var i; i < 15; i ++){
+      this.cupPerHour[i] += cupPerCus;
+    };
   },
-  calcPoundPerCus : function() {
-    var poundPerCusPPM = (tempRandomPPM * this.averagePound) + (cupPerCus / 16);
-    return poundPerCusPPM;
+  generatePoundPerHour : function() {
+    var poundPerCus = (oneHourOfCustomers * this.averagePound) + (cupPerCus / 16);
+    for (var i; i < 15; i ++){
+      this.poundPerHour[i] += poundPerCus;
+    };
   },
+
 };
+pikePlaceMarket.generateCustomerPerHour();
+pikePlaceMarket.generateCupPerHour();
+pikePlaceMarket.generatePoundPerHour();
