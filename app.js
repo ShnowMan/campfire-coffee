@@ -1,3 +1,9 @@
+var timeOpen =
+              ['6am','7am','8am',
+              '9am','10am','11am',
+              '12pm','1pm','2pm',
+              '3pm','4pm','5pm',
+              '6pm','7pm','8pm',];
 var pikePlaceMarket = {
   minCustomer: 14,
   maxCustomer: 35,
@@ -18,40 +24,46 @@ var pikePlaceMarket = {
     return Math.floor(Math.random() * (max - min) + min);
   },
   generateCustomerPerHour : function() {
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < timeOpen.length; i++) {
       var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
       this.customerPerHour.push(oneHourOfCustomers);
       this.customerTotal += oneHourOfCustomers;
     }
   },
   generateCupPerHour : function() {
-    for (var i = 0; i < this.customerPerHour.length; i++) {
-      var oneHourOfCups = (this.customerPerHour[i] * this.averageCup);
-      this.cupPerHour.push(this.customerPerHour[i] * this.averageCup);
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCups = parseFloat((this.customerPerHour[i] * this.averageCup).toFixed(2));
+      this.cupPerHour.push(oneHourOfCups);
       this.cupTotal += oneHourOfCups;
     };
   },
   generatePoundPerHour : function() {
-    for (var i = 0; i < this.customerPerHour.length; i++){
-      var oneHourOfPounds = (this.customerPerHour[i] * this.averagePound);
+    for (var i = 0; i < timeOpen.length; i++){
+      var oneHourOfPounds = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2));
       this.poundPerHour.push(oneHourOfPounds);
       this.poundToGoTotal += oneHourOfPounds;
-      var oneHourOfCupPounds = (this.cupPerHour[i] / 16);
+      var oneHourOfCupPounds = parseFloat((this.cupPerHour[i] / 16).toFixed(2));
       this.poundsForCupsHourly.push(oneHourOfCupPounds);
       this.poundsForCupsTotal += oneHourOfCupPounds;
-      var totalPoundsCombined = (this.customerPerHour[i] * this.averagePound) + (this.cupPerHour[i] / 16);
+      var totalPoundsCombined = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2)) + parseFloat((this.cupPerHour[i] / 16).toFixed(2));
       this.poundOverAllHourly.push(totalPoundsCombined);
       this.poundOverAllTotal += totalPoundsCombined;
     };
   },
   generateEmployeeNeeded : function () {
-
+    for (var i = 0; i < timeOpen.length; i++)
+      if ((this.customerPerHour[i] / 30) >= 1) {
+        this.empNeeded[i] = 2;
+      } else {
+        this.empNeeded[i] = 1;
+      }
   },
   //The number of employees she will need at each location, each hour. Assume that each customer will require an average of two minutes of a single employee's time. This number needs to be rounded up to the nearest integer since it requires, for instance, 5 people to adequately do the work of 4.2 people.
   render: function() {
-    pikePlaceMarket.generateCustomerPerHour();
-    pikePlaceMarket.generateCupPerHour();
-    pikePlaceMarket.generatePoundPerHour();
+    this.generateCustomerPerHour();
+    this.generateCupPerHour();
+    this.generatePoundPerHour();
+    this.generateEmployeeNeeded();
   },
 };
 console.log(pikePlaceMarket);
