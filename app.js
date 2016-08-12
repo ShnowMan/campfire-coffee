@@ -7,10 +7,12 @@ var pikePlaceMarket = {
   cupPerHour : [],
   poundsForCupsHourly: [],
   poundPerHour : [],
+  poundOverAllHourly : [],
   customerTotal: 0,
   cupTotal : 0,
   poundsForCupsTotal : 0,
-  poundTotal : 0,
+  poundToGoTotal : 0,
+  poundOverAllTotal : 0,
   randomNum : function(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   },
@@ -32,10 +34,13 @@ var pikePlaceMarket = {
     for (var i = 0; i < this.customerPerHour.length; i++){
       var oneHourOfPounds = (this.customerPerHour[i] * this.averagePound);
       this.poundPerHour.push(oneHourOfPounds);
-      this.poundTotal += oneHourOfPounds;
+      this.poundToGoTotal += oneHourOfPounds;
       var oneHourOfCupPounds = (this.cupPerHour[i] / 16);
       this.poundsForCupsHourly.push(oneHourOfCupPounds);
       this.poundsForCupsTotal += oneHourOfCupPounds;
+      var totalPoundsCombined = (this.customerPerHour[i] * this.averagePound) + (this.cupPerHour[i] / 16);
+      this.poundOverAllHourly.push(totalPoundsCombined);
+      this.poundOverAllTotal += totalPoundsCombined;
     };
   },
 };
