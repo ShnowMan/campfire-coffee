@@ -13,6 +13,7 @@ var pikePlaceMarket = {
   poundsForCupsTotal : 0,
   poundToGoTotal : 0,
   poundOverAllTotal : 0,
+  empNeeded: [],
   randomNum : function(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   },
@@ -43,8 +44,15 @@ var pikePlaceMarket = {
       this.poundOverAllTotal += totalPoundsCombined;
     };
   },
+  generateEmployeeNeeded : function () {
+
+  },
+  //The number of employees she will need at each location, each hour. Assume that each customer will require an average of two minutes of a single employee's time. This number needs to be rounded up to the nearest integer since it requires, for instance, 5 people to adequately do the work of 4.2 people.
+  render: function() {
+    pikePlaceMarket.generateCustomerPerHour();
+    pikePlaceMarket.generateCupPerHour();
+    pikePlaceMarket.generatePoundPerHour();
+  },
 };
-pikePlaceMarket.generateCustomerPerHour();
-pikePlaceMarket.generateCupPerHour();
-pikePlaceMarket.generatePoundPerHour();
 console.log(pikePlaceMarket);
+pikePlaceMarket.render();
