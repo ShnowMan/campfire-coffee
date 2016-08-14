@@ -72,7 +72,7 @@ var pPMEl = document.getElementById('pike-place-market');
 function makeDataListPPM() {
   for (var i in timeOpen) {
     var dataLiEl = document.createElement('li');
-    dataLiEl.textContent = timeOpen[i] + ': ' + pikePlaceMarket.poundOverAllHourly[i].toFixed(2) + ' lbs [' + pikePlaceMarket.customerPerHour[i].toFixed(2) + ' customers, ' + pikePlaceMarket.cupPerHour[i].toFixed(2) + ' cups (' + pikePlaceMarket.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + pikePlaceMarket.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    dataLiEl.textContent = timeOpen[i] + ': ' + pikePlaceMarket.poundOverAllHourly[i].toFixed(2) + ' lbs [' + pikePlaceMarket.customerPerHour[i] + ' customers, ' + pikePlaceMarket.cupPerHour[i].toFixed(2) + ' cups (' + pikePlaceMarket.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + pikePlaceMarket.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
     pPMEl.appendChild(dataLiEl);
   }
 };
@@ -162,7 +162,7 @@ var cHEl = document.getElementById('capitol-hill');
 function makeDataListCH() {
   for (var i in timeOpen) {
     var dataLiEl = document.createElement('li');
-    dataLiEl.textContent = timeOpen[i] + ': ' + capitolHill.poundOverAllHourly[i].toFixed(2) + ' lbs [' + capitolHill.customerPerHour[i].toFixed(2) + ' customers, ' + capitolHill.cupPerHour[i].toFixed(2) + ' cups (' + capitolHill.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + capitolHill.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    dataLiEl.textContent = timeOpen[i] + ': ' + capitolHill.poundOverAllHourly[i].toFixed(2) + ' lbs [' + capitolHill.customerPerHour[i] + ' customers, ' + capitolHill.cupPerHour[i].toFixed(2) + ' cups (' + capitolHill.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + capitolHill.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
     cHEl.appendChild(dataLiEl);
   }
 };
@@ -182,3 +182,93 @@ function makeLocationTotalCH() {
   cHEl.appendChild(totalPoundsOverAllLiEl);
 };
 makeLocationTotalCH();
+
+var seattlePubilcLibrary = {
+  name: 'Seattle Pubilc Library',
+  minCustomer: 9,
+  maxCustomer: 45,
+  averageCup: 2.6,
+  averagePound: 0.02,
+  customerPerHour : [],
+  cupPerHour : [],
+  poundsForCupsHourly: [],
+  poundToGoHour : [],
+  poundOverAllHourly : [],
+  customerTotal: 0,
+  cupsTotal : 0,
+  poundsForCupsTotal : 0,
+  poundToGoTotal : 0,
+  poundOverAllTotal : 0,
+  employeeNeeded: [],
+  randomNum : function(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  },
+  generateCustomerPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
+      this.customerPerHour.push(oneHourOfCustomers);
+      this.customerTotal += oneHourOfCustomers;
+    }
+  },
+  generateCupPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCups = parseFloat((this.customerPerHour[i] * this.averageCup).toFixed(2));
+      this.cupPerHour.push(oneHourOfCups);
+      this.cupsTotal += oneHourOfCups;
+    };
+  },
+  generatePoundPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++){
+      var oneHourOfPounds = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2));
+      this.poundToGoHour.push(oneHourOfPounds);
+      this.poundToGoTotal += oneHourOfPounds;
+      var oneHourOfCupPounds = parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundsForCupsHourly.push(oneHourOfCupPounds);
+      this.poundsForCupsTotal += oneHourOfCupPounds;
+      var totalPoundsCombined = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2)) + parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundOverAllHourly.push(totalPoundsCombined);
+      this.poundOverAllTotal += totalPoundsCombined;
+    };
+  },
+  generateEmployeeNeeded : function () {
+    for (var i = 0; i < timeOpen.length; i++)
+      if ((this.customerPerHour[i] / 30) >= 1) {
+        this.employeeNeeded[i] = 2;
+      } else {
+        this.employeeNeeded[i] = 1;
+      }
+  },
+  render: function() {
+    this.generateCustomerPerHour();
+    this.generateCupPerHour();
+    this.generatePoundPerHour();
+    this.generateEmployeeNeeded();
+  },
+};
+console.log(seattlePubilcLibrary);
+seattlePubilcLibrary.render();
+var sPLEl = document.getElementById('seattle-pubilc-library');
+function makeDataListSPL() {
+  for (var i in timeOpen) {
+    var dataLiEl = document.createElement('li');
+    dataLiEl.textContent = timeOpen[i] + ': ' + seattlePubilcLibrary.poundOverAllHourly[i].toFixed(2) + ' lbs [' + seattlePubilcLibrary.customerPerHour[i] + ' customers, ' + seattlePubilcLibrary.cupPerHour[i].toFixed(2) + ' cups (' + seattlePubilcLibrary.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + seattlePubilcLibrary.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    sPLEl.appendChild(dataLiEl);
+  }
+};
+makeDataListSPL();
+function makeLocationTotalSPL() {
+  var totalCustomersLiEl = document.createElement('li');
+  totalCustomersLiEl.textContent = 'Total customers at Capitol Hill: ' + seattlePubilcLibrary.customerTotal;
+  var totalCupsLiEl = document.createElement('li');
+  totalCupsLiEl.textContent = 'Total cups sold at Capitol Hill: ' + seattlePubilcLibrary.cupsTotal.toFixed(2);
+  var totalPoundsToGoLiEl = document.createElement('li');
+  totalPoundsToGoLiEl.textContent = 'Total to-go pound packages sold at Capitol Hill: ' + seattlePubilcLibrary.poundToGoTotal.toFixed(2);
+  var totalPoundsOverAllLiEl = document.createElement('li');
+  totalPoundsOverAllLiEl.textContent = 'Total pounds of beans needed at Capitol Hill: ' + seattlePubilcLibrary.poundOverAllTotal.toFixed(2);
+  sPLEl.appendChild(totalCustomersLiEl);
+  sPLEl.appendChild(totalCupsLiEl);
+  sPLEl.appendChild(totalPoundsToGoLiEl);
+  sPLEl.appendChild(totalPoundsOverAllLiEl);
+};
+makeLocationTotalSPL();
+//sPLEl
