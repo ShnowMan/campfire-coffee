@@ -1,9 +1,9 @@
 var timeOpen =
-              ['6am','7am','8am',
-              '9am','10am','11am',
-              '12pm','1pm','2pm',
-              '3pm','4pm','5pm',
-              '6pm','7pm','8pm',];
+              ['6:00am','7:00am','8:00am',
+              '9:00am','10:00am','11:00am',
+              '12:00pm','1:00pm','2:00pm',
+              '3:00pm','4:00pm','5:00pm',
+              '6:00pm','7:00pm','8:00pm',];
 var pikePlaceMarket = {
   name: 'Pike Place Market',
   minCustomer: 14,
@@ -16,11 +16,11 @@ var pikePlaceMarket = {
   poundToGoHour : [],
   poundOverAllHourly : [],
   customerTotal: 0,
-  cupTotal : 0,
+  cupsTotal : 0,
   poundsForCupsTotal : 0,
   poundToGoTotal : 0,
   poundOverAllTotal : 0,
-  empNeeded: [],
+  employeeNeeded: [],
   randomNum : function(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
   },
@@ -35,7 +35,7 @@ var pikePlaceMarket = {
     for (var i = 0; i < timeOpen.length; i++) {
       var oneHourOfCups = parseFloat((this.customerPerHour[i] * this.averageCup).toFixed(2));
       this.cupPerHour.push(oneHourOfCups);
-      this.cupTotal += oneHourOfCups;
+      this.cupsTotal += oneHourOfCups;
     };
   },
   generatePoundPerHour : function() {
@@ -54,9 +54,9 @@ var pikePlaceMarket = {
   generateEmployeeNeeded : function () {
     for (var i = 0; i < timeOpen.length; i++)
       if ((this.customerPerHour[i] / 30) >= 1) {
-        this.empNeeded[i] = 2;
+        this.employeeNeeded[i] = 2;
       } else {
-        this.empNeeded[i] = 1;
+        this.employeeNeeded[i] = 1;
       }
   },
   render: function() {
@@ -68,3 +68,26 @@ var pikePlaceMarket = {
 };
 console.log(pikePlaceMarket);
 pikePlaceMarket.render();
+console.log(timeOpen[0] + ': ' + pikePlaceMarket.poundOverAllHourly[0] + ' lbs [' + pikePlaceMarket.customerPerHour[0] + ' customers, ' + pikePlaceMarket.cupPerHour[0] + ' cups (' + pikePlaceMarket.poundsForCupsHourly[0] + ' lbs), ' + pikePlaceMarket.poundToGoHour[0] + ' lbs to-go]');
+console.log('Total customers at Pike Place Market: ' + pikePlaceMarket.customerTotal);
+console.log('Total cups sold at Pike Place Market: ' + pikePlaceMarket.cupsTotal);
+console.log('Total to-go pound packages sold at Pike Place Market: ' + pikePlaceMarket.poundToGoTotal);
+console.log('Total pounds of beans needed at Pike Place Market: ' + pikePlaceMarket.poundOverAllTotal);
+
+
+var pPMEl = document.getElementById('pike-place-market');
+function makeDataList() {
+  for (var i in timeOpen) {
+    var liEl = document.createElement('li');
+    liEl.textContent = timeOpen[i] + ': ' + pikePlaceMarket.poundOverAllHourly[i].toFixed(2) + ' lbs [' + pikePlaceMarket.customerPerHour[i].toFixed(2) + ' customers, ' + pikePlaceMarket.cupPerHour[i].toFixed(2) + ' cups (' + pikePlaceMarket.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + pikePlaceMarket.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    pPMEl.appendChild(liEl);
+  }
+};
+makeDataList();
+function makeLocationTotal() {
+  var totalCustomersEl = document.createElement('li');
+  totalCustomersEl.textContent = 'Total customers at Pike Place Market: ' + pikePlaceMarket.customerTotal;
+  var totalCupsEl = document.createElement('li');
+  totalCupsEl.textContent = 'Total cups sold at Pike Place Market: ' + pikePlaceMarket.cupsTotal;
+};
+makeLocationTotal();
