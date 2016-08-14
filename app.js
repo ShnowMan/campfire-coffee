@@ -1,10 +1,3 @@
-var timeOpen =
-              ['6am','7am','8am',
-              '9am','10am','11am',
-              '12pm','1pm','2pm',
-              '3pm','4pm','5pm',
-              '6pm','7pm','8pm',];
-console.log(timeOpen);
 /*
 var pikePlaceMarket = {
   name: 'Pike Place Market',
@@ -71,6 +64,13 @@ var pikePlaceMarket = {
 console.log(pikePlaceMarket);
 pikePlaceMarket.render();
 */
+
+var timeOpen =
+['6am','7am','8am',
+'9am','10am','11am',
+'12pm','1pm','2pm',
+'3pm','4pm','5pm',
+'6pm','7pm','8pm',];
 
 var coffeeShops = [];
 console.log(coffeeShops);
@@ -145,3 +145,10 @@ new CoffeeShop('Capitol Hill', 12, 28, 3.2, 0.03);
 new CoffeeShop('Seattle Public Library', 9, 45, 2.6, 0.02);
 new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
 new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
+
+var renderCoffeeShops = function () {
+  for (var i = 0; i < coffeeShops.length; i++) {
+    coffeeShops[i].render();
+  }
+};
+renderCoffeeShops();
