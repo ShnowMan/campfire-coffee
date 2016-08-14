@@ -258,17 +258,194 @@ function makeDataListSPL() {
 makeDataListSPL();
 function makeLocationTotalSPL() {
   var totalCustomersLiEl = document.createElement('li');
-  totalCustomersLiEl.textContent = 'Total customers at Capitol Hill: ' + seattlePubilcLibrary.customerTotal;
+  totalCustomersLiEl.textContent = 'Total customers at Seattle Pubilc Library: ' + seattlePubilcLibrary.customerTotal;
   var totalCupsLiEl = document.createElement('li');
-  totalCupsLiEl.textContent = 'Total cups sold at Capitol Hill: ' + seattlePubilcLibrary.cupsTotal.toFixed(2);
+  totalCupsLiEl.textContent = 'Total cups sold at Seattle Pubilc Library: ' + seattlePubilcLibrary.cupsTotal.toFixed(2);
   var totalPoundsToGoLiEl = document.createElement('li');
-  totalPoundsToGoLiEl.textContent = 'Total to-go pound packages sold at Capitol Hill: ' + seattlePubilcLibrary.poundToGoTotal.toFixed(2);
+  totalPoundsToGoLiEl.textContent = 'Total to-go pound packages sold at Seattle Pubilc Library: ' + seattlePubilcLibrary.poundToGoTotal.toFixed(2);
   var totalPoundsOverAllLiEl = document.createElement('li');
-  totalPoundsOverAllLiEl.textContent = 'Total pounds of beans needed at Capitol Hill: ' + seattlePubilcLibrary.poundOverAllTotal.toFixed(2);
+  totalPoundsOverAllLiEl.textContent = 'Total pounds of beans needed at Seattle Pubilc Library: ' + seattlePubilcLibrary.poundOverAllTotal.toFixed(2);
   sPLEl.appendChild(totalCustomersLiEl);
   sPLEl.appendChild(totalCupsLiEl);
   sPLEl.appendChild(totalPoundsToGoLiEl);
   sPLEl.appendChild(totalPoundsOverAllLiEl);
 };
 makeLocationTotalSPL();
-//sPLEl
+
+var southLakeUnion = {
+  name: 'South Lake Union',
+  minCustomer: 5,
+  maxCustomer: 18,
+  averageCup: 1.3,
+  averagePound: 0.04,
+  customerPerHour : [],
+  cupPerHour : [],
+  poundsForCupsHourly: [],
+  poundToGoHour : [],
+  poundOverAllHourly : [],
+  customerTotal: 0,
+  cupsTotal : 0,
+  poundsForCupsTotal : 0,
+  poundToGoTotal : 0,
+  poundOverAllTotal : 0,
+  employeeNeeded: [],
+  randomNum : function(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  },
+  generateCustomerPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
+      this.customerPerHour.push(oneHourOfCustomers);
+      this.customerTotal += oneHourOfCustomers;
+    }
+  },
+  generateCupPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCups = parseFloat((this.customerPerHour[i] * this.averageCup).toFixed(2));
+      this.cupPerHour.push(oneHourOfCups);
+      this.cupsTotal += oneHourOfCups;
+    };
+  },
+  generatePoundPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++){
+      var oneHourOfPounds = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2));
+      this.poundToGoHour.push(oneHourOfPounds);
+      this.poundToGoTotal += oneHourOfPounds;
+      var oneHourOfCupPounds = parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundsForCupsHourly.push(oneHourOfCupPounds);
+      this.poundsForCupsTotal += oneHourOfCupPounds;
+      var totalPoundsCombined = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2)) + parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundOverAllHourly.push(totalPoundsCombined);
+      this.poundOverAllTotal += totalPoundsCombined;
+    };
+  },
+  generateEmployeeNeeded : function () {
+    for (var i = 0; i < timeOpen.length; i++)
+      if ((this.customerPerHour[i] / 30) >= 1) {
+        this.employeeNeeded[i] = 2;
+      } else {
+        this.employeeNeeded[i] = 1;
+      }
+  },
+  render: function() {
+    this.generateCustomerPerHour();
+    this.generateCupPerHour();
+    this.generatePoundPerHour();
+    this.generateEmployeeNeeded();
+  },
+};
+console.log(southLakeUnion);
+southLakeUnion.render();
+var sLUEl = document.getElementById('south-lake-union');
+function makeDataListSLU() {
+  for (var i in timeOpen) {
+    var dataLiEl = document.createElement('li');
+    dataLiEl.textContent = timeOpen[i] + ': ' + southLakeUnion.poundOverAllHourly[i].toFixed(2) + ' lbs [' + southLakeUnion.customerPerHour[i] + ' customers, ' + southLakeUnion.cupPerHour[i].toFixed(2) + ' cups (' + southLakeUnion.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + southLakeUnion.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    sLUEl.appendChild(dataLiEl);
+  }
+};
+makeDataListSLU();
+function makeLocationTotalSLU() {
+  var totalCustomersLiEl = document.createElement('li');
+  totalCustomersLiEl.textContent = 'Total customers at South Lake Union: ' + southLakeUnion.customerTotal;
+  var totalCupsLiEl = document.createElement('li');
+  totalCupsLiEl.textContent = 'Total cups sold at South Lake Union: ' + southLakeUnion.cupsTotal.toFixed(2);
+  var totalPoundsToGoLiEl = document.createElement('li');
+  totalPoundsToGoLiEl.textContent = 'Total to-go pound packages sold at South Lake Union: ' + southLakeUnion.poundToGoTotal.toFixed(2);
+  var totalPoundsOverAllLiEl = document.createElement('li');
+  totalPoundsOverAllLiEl.textContent = 'Total pounds of beans needed at South Lake Union: ' + southLakeUnion.poundOverAllTotal.toFixed(2);
+  sLUEl.appendChild(totalCustomersLiEl);
+  sLUEl.appendChild(totalCupsLiEl);
+  sLUEl.appendChild(totalPoundsToGoLiEl);
+  sLUEl.appendChild(totalPoundsOverAllLiEl);
+};
+makeLocationTotalSLU();
+
+var seaTacAirPort = {
+  name: 'Sea-Tac Airport',
+  minCustomer: 28,
+  maxCustomer: 44,
+  averageCup: 1.1,
+  averagePound: 0.41,
+  customerPerHour : [],
+  cupPerHour : [],
+  poundsForCupsHourly: [],
+  poundToGoHour : [],
+  poundOverAllHourly : [],
+  customerTotal: 0,
+  cupsTotal : 0,
+  poundsForCupsTotal : 0,
+  poundToGoTotal : 0,
+  poundOverAllTotal : 0,
+  employeeNeeded: [],
+  randomNum : function(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  },
+  generateCustomerPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
+      this.customerPerHour.push(oneHourOfCustomers);
+      this.customerTotal += oneHourOfCustomers;
+    }
+  },
+  generateCupPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCups = parseFloat((this.customerPerHour[i] * this.averageCup).toFixed(2));
+      this.cupPerHour.push(oneHourOfCups);
+      this.cupsTotal += oneHourOfCups;
+    };
+  },
+  generatePoundPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++){
+      var oneHourOfPounds = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2));
+      this.poundToGoHour.push(oneHourOfPounds);
+      this.poundToGoTotal += oneHourOfPounds;
+      var oneHourOfCupPounds = parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundsForCupsHourly.push(oneHourOfCupPounds);
+      this.poundsForCupsTotal += oneHourOfCupPounds;
+      var totalPoundsCombined = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2)) + parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundOverAllHourly.push(totalPoundsCombined);
+      this.poundOverAllTotal += totalPoundsCombined;
+    };
+  },
+  generateEmployeeNeeded : function () {
+    for (var i = 0; i < timeOpen.length; i++)
+      if ((this.customerPerHour[i] / 30) >= 1) {
+        this.employeeNeeded[i] = 2;
+      } else {
+        this.employeeNeeded[i] = 1;
+      }
+  },
+  render: function() {
+    this.generateCustomerPerHour();
+    this.generateCupPerHour();
+    this.generatePoundPerHour();
+    this.generateEmployeeNeeded();
+  },
+};
+console.log(seaTacAirPort);
+seaTacAirPort.render();
+var sTAEl = document.getElementById('seatac-airport');
+function makeDataListSTA() {
+  for (var i in timeOpen) {
+    var dataLiEl = document.createElement('li');
+    dataLiEl.textContent = timeOpen[i] + ': ' + seaTacAirPort.poundOverAllHourly[i].toFixed(2) + ' lbs [' + seaTacAirPort.customerPerHour[i] + ' customers, ' + seaTacAirPort.cupPerHour[i].toFixed(2) + ' cups (' + seaTacAirPort.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + seaTacAirPort.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    sTAEl.appendChild(dataLiEl);
+  }
+};
+makeDataListSTA();
+function makeLocationTotalSTA() {
+  var totalCustomersLiEl = document.createElement('li');
+  totalCustomersLiEl.textContent = 'Total customers at Sea-Tac Airport: ' + seaTacAirPort.customerTotal;
+  var totalCupsLiEl = document.createElement('li');
+  totalCupsLiEl.textContent = 'Total cups sold at Sea-Tac Airport: ' + seaTacAirPort.cupsTotal.toFixed(2);
+  var totalPoundsToGoLiEl = document.createElement('li');
+  totalPoundsToGoLiEl.textContent = 'Total to-go pound packages sold at Sea-Tac Airport: ' + seaTacAirPort.poundToGoTotal.toFixed(2);
+  var totalPoundsOverAllLiEl = document.createElement('li');
+  totalPoundsOverAllLiEl.textContent = 'Total pounds of beans needed at Sea-Tac Airport: ' + seaTacAirPort.poundOverAllTotal.toFixed(2);
+  sTAEl.appendChild(totalCustomersLiEl);
+  sTAEl.appendChild(totalCupsLiEl);
+  sTAEl.appendChild(totalPoundsToGoLiEl);
+  sTAEl.appendChild(totalPoundsOverAllLiEl);
+};
+makeLocationTotalSTA();
