@@ -5,6 +5,7 @@ var timeOpen =
               '3pm','4pm','5pm',
               '6pm','7pm','8pm',];
 var pikePlaceMarket = {
+  name: 'Pike Place Market',
   minCustomer: 14,
   maxCustomer: 35,
   averageCup: 1.2,
@@ -12,7 +13,7 @@ var pikePlaceMarket = {
   customerPerHour : [],
   cupPerHour : [],
   poundsForCupsHourly: [],
-  poundPerHour : [],
+  poundToGoHour : [],
   poundOverAllHourly : [],
   customerTotal: 0,
   cupTotal : 0,
@@ -40,7 +41,7 @@ var pikePlaceMarket = {
   generatePoundPerHour : function() {
     for (var i = 0; i < timeOpen.length; i++){
       var oneHourOfPounds = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2));
-      this.poundPerHour.push(oneHourOfPounds);
+      this.poundToGoHour.push(oneHourOfPounds);
       this.poundToGoTotal += oneHourOfPounds;
       var oneHourOfCupPounds = parseFloat((this.cupPerHour[i] / 16).toFixed(2));
       this.poundsForCupsHourly.push(oneHourOfCupPounds);
@@ -58,7 +59,6 @@ var pikePlaceMarket = {
         this.empNeeded[i] = 1;
       }
   },
-  //The number of employees she will need at each location, each hour. Assume that each customer will require an average of two minutes of a single employee's time. This number needs to be rounded up to the nearest integer since it requires, for instance, 5 people to adequately do the work of 4.2 people.
   render: function() {
     this.generateCustomerPerHour();
     this.generateCupPerHour();
