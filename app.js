@@ -69,15 +69,15 @@ var pikePlaceMarket = {
 console.log(pikePlaceMarket);
 pikePlaceMarket.render();
 var pPMEl = document.getElementById('pike-place-market');
-function makeDataList() {
+function makeDataListPPM() {
   for (var i in timeOpen) {
     var dataLiEl = document.createElement('li');
     dataLiEl.textContent = timeOpen[i] + ': ' + pikePlaceMarket.poundOverAllHourly[i].toFixed(2) + ' lbs [' + pikePlaceMarket.customerPerHour[i].toFixed(2) + ' customers, ' + pikePlaceMarket.cupPerHour[i].toFixed(2) + ' cups (' + pikePlaceMarket.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + pikePlaceMarket.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
     pPMEl.appendChild(dataLiEl);
   }
 };
-makeDataList();
-function makeLocationTotal() {
+makeDataListPPM();
+function makeLocationTotalPPM() {
   var totalCustomersLiEl = document.createElement('li');
   totalCustomersLiEl.textContent = 'Total customers at Pike Place Market: ' + pikePlaceMarket.customerTotal;
   var totalCupsLiEl = document.createElement('li');
@@ -91,4 +91,94 @@ function makeLocationTotal() {
   pPMEl.appendChild(totalPoundsToGoLiEl);
   pPMEl.appendChild(totalPoundsOverAllLiEl);
 };
-makeLocationTotal();
+makeLocationTotalPPM();
+
+
+var capitolHill = {
+  name: 'Capitol Hill',
+  minCustomer: 12,
+  maxCustomer: 28,
+  averageCup: 3.2,
+  averagePound: 0.03,
+  customerPerHour : [],
+  cupPerHour : [],
+  poundsForCupsHourly: [],
+  poundToGoHour : [],
+  poundOverAllHourly : [],
+  customerTotal: 0,
+  cupsTotal : 0,
+  poundsForCupsTotal : 0,
+  poundToGoTotal : 0,
+  poundOverAllTotal : 0,
+  employeeNeeded: [],
+  randomNum : function(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  },
+  generateCustomerPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCustomers = this.randomNum(this.maxCustomer, this.minCustomer);
+      this.customerPerHour.push(oneHourOfCustomers);
+      this.customerTotal += oneHourOfCustomers;
+    }
+  },
+  generateCupPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++) {
+      var oneHourOfCups = parseFloat((this.customerPerHour[i] * this.averageCup).toFixed(2));
+      this.cupPerHour.push(oneHourOfCups);
+      this.cupsTotal += oneHourOfCups;
+    };
+  },
+  generatePoundPerHour : function() {
+    for (var i = 0; i < timeOpen.length; i++){
+      var oneHourOfPounds = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2));
+      this.poundToGoHour.push(oneHourOfPounds);
+      this.poundToGoTotal += oneHourOfPounds;
+      var oneHourOfCupPounds = parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundsForCupsHourly.push(oneHourOfCupPounds);
+      this.poundsForCupsTotal += oneHourOfCupPounds;
+      var totalPoundsCombined = parseFloat((this.customerPerHour[i] * this.averagePound).toFixed(2)) + parseFloat((this.cupPerHour[i] / 16).toFixed(2));
+      this.poundOverAllHourly.push(totalPoundsCombined);
+      this.poundOverAllTotal += totalPoundsCombined;
+    };
+  },
+  generateEmployeeNeeded : function () {
+    for (var i = 0; i < timeOpen.length; i++)
+      if ((this.customerPerHour[i] / 30) >= 1) {
+        this.employeeNeeded[i] = 2;
+      } else {
+        this.employeeNeeded[i] = 1;
+      }
+  },
+  render: function() {
+    this.generateCustomerPerHour();
+    this.generateCupPerHour();
+    this.generatePoundPerHour();
+    this.generateEmployeeNeeded();
+  },
+};
+console.log(capitolHill);
+capitolHill.render();
+var cHEl = document.getElementById('capitol-hill');
+function makeDataListCH() {
+  for (var i in timeOpen) {
+    var dataLiEl = document.createElement('li');
+    dataLiEl.textContent = timeOpen[i] + ': ' + capitolHill.poundOverAllHourly[i].toFixed(2) + ' lbs [' + capitolHill.customerPerHour[i].toFixed(2) + ' customers, ' + capitolHill.cupPerHour[i].toFixed(2) + ' cups (' + capitolHill.poundsForCupsHourly[i].toFixed(2) + ' lbs), ' + capitolHill.poundToGoHour[i].toFixed(2) + ' lbs to-go]';
+    cHEl.appendChild(dataLiEl);
+  }
+};
+makeDataListCH();
+function makeLocationTotalCH() {
+  var totalCustomersLiEl = document.createElement('li');
+  totalCustomersLiEl.textContent = 'Total customers at Capitol Hill: ' + capitolHill.customerTotal;
+  var totalCupsLiEl = document.createElement('li');
+  totalCupsLiEl.textContent = 'Total cups sold at Capitol Hill: ' + capitolHill.cupsTotal.toFixed(2);
+  var totalPoundsToGoLiEl = document.createElement('li');
+  totalPoundsToGoLiEl.textContent = 'Total to-go pound packages sold at Capitol Hill: ' + capitolHill.poundToGoTotal.toFixed(2);
+  var totalPoundsOverAllLiEl = document.createElement('li');
+  totalPoundsOverAllLiEl.textContent = 'Total pounds of beans needed at Capitol Hill: ' + capitolHill.poundOverAllTotal.toFixed(2);
+  cHEl.appendChild(totalCustomersLiEl);
+  cHEl.appendChild(totalCupsLiEl);
+  cHEl.appendChild(totalPoundsToGoLiEl);
+  cHEl.appendChild(totalPoundsOverAllLiEl);
+};
+makeLocationTotalCH();
