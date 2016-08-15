@@ -1,6 +1,6 @@
 var timeOpen =
 ['6:00am','7:00am','8:00am',
-'9:00am','10:00am',':0011am',
+'9:00am','10:00am','11:00am',
 '12:00pm','1:00pm','2:00pm',
 '3:00pm','4:00pm','5:00pm',
 '6:00pm','7:00pm','8:00pm',];
@@ -89,25 +89,34 @@ renderCoffeeShops();
 var tableEl = document.getElementById('cfc-data-table');
 function buildTableHeader() {
   var trEl = document.createElement('tr');
+  var blankThEl = document.createElement('th');
+  blankThEl.textContent = ' ';
+  trEl.appendChild(blankThEl);
+  var dailyLocationTotalThEl = document.createElement('th');
+  dailyLocationTotalThEl.textContent = 'Daily Location Total';
+  trEl.appendChild(dailyLocationTotalThEl);
   for (var i = 0; i < timeOpen.length; i++) {
-    var thEl = document.createElement('th');
-    thEl.textContent = timeOpen[i];
-    trEl.appendChild(thEl);
+    var hoursThEl = document.createElement('th');
+    hoursThEl.textContent = timeOpen[i];
+    trEl.appendChild(hoursThEl);
   }
   tableEl.appendChild(trEl);
 };
 buildTableHeader();
 
 function buildTableBody() {
-  for (var i = 0; i < coffeeShops.length; i++){
-    var trEl = document.createElement('tr');
-    trEl.textContent = coffeeShops[i].name;
-    for (var a = 0; a < timeOpen.length; a++) {
-      var thEl = document.createElement('th');
-      thEl.textContent = coffeeShops[i].poundOverAllHourly[a].toFixed(2);
-      trEl.appendChild(thEl);
+  for (var a = 0; a < coffeeShops.length; a++){
+    var hourlyTrEl = document.createElement('tr');
+    hourlyTrEl.textContent = coffeeShops[a].name;
+    var totalThEl = document.createElement('th');
+    totalThEl.textContent = coffeeShops[a].poundOverAllTotal.toFixed(2);
+    hourlyTrEl.appendChild(totalThEl);
+    for (var c = 0; c < timeOpen.length; c++) {
+      var hourlyThEl = document.createElement('th');
+      hourlyThEl.textContent = coffeeShops[a].poundOverAllHourly[c].toFixed(2);
+      hourlyTrEl.appendChild(hourlyThEl);
     }
-    tableEl.appendChild(trEl);
+    tableEl.appendChild(hourlyTrEl);
   }
 };
 buildTableBody();
