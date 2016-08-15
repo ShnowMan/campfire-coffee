@@ -117,6 +117,11 @@ function buildTableHeader() {
 buildTableHeader();
 
 function buildTableBody() {
+  var hourlyTotalsTrEl = document.createElement('tr');
+  hourlyTotalsTrEl.textContent = 'Totals';
+  var grandTotalThEl = document.createElement('th');
+  grandTotalThEl.textContent = poundsOverAll.toFixed(2);
+  hourlyTotalsTrEl.appendChild(grandTotalThEl);
   for (var a = 0; a < coffeeShops.length; a++){
     var hourlyTrEl = document.createElement('tr');
     hourlyTrEl.textContent = coffeeShops[a].name;
@@ -129,6 +134,12 @@ function buildTableBody() {
       hourlyTrEl.appendChild(hourlyThEl);
     }
     tableEl.appendChild(hourlyTrEl);
+    tableEl.appendChild(hourlyTotalsTrEl);
+  }
+  for (var c = 0; c < timeOpen.length; c++) {
+    var hourlyTotalsThEl = document.createElement('th');
+    hourlyTotalsThEl.textContent = poundsTotalHourly[c].toFixed(2);
+    hourlyTotalsTrEl.appendChild(hourlyTotalsThEl);
   }
 };
 buildTableBody();
