@@ -72,12 +72,11 @@ CoffeeShop.prototype.render = function() {
   this.generateEmployeeNeeded();
 };
 
-
-new CoffeeShop('Pike Place Market', 14, 35, 1.2, 0.34);
-new CoffeeShop('Capitol Hill', 12, 28, 3.2, 0.03);
-new CoffeeShop('Seattle Public Library', 9, 45, 2.6, 0.02);
-new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
-new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
+var pikePlaceMarket = new CoffeeShop('Pike Place Market', 14, 35, 1.2, 0.34);
+var capitolHill = new CoffeeShop('Capitol Hill', 12, 28, 3.2, 0.03);
+var seattlePublicLibrary = new CoffeeShop('Seattle Public Library', 9, 45, 2.6, 0.02);
+var southLakeUnion = new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
+var seaTacAirport = new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 
 var renderCoffeeShops = function () {
   for (var i = 0; i < coffeeShops.length; i++) {
@@ -85,6 +84,19 @@ var renderCoffeeShops = function () {
   }
 };
 renderCoffeeShops();
+
+var poundsOverAll = 0;
+var poundsTotalHourly = [];
+function addPoundHoursTogeather() {
+  for (var i = 0; i < timeOpen.length; i++) {
+    var temp = (pikePlaceMarket.poundOverAllHourly[i] + capitolHill.poundOverAllHourly[i] + seattlePublicLibrary.poundOverAllHourly[i] + southLakeUnion.poundOverAllHourly[i] + seaTacAirport.poundOverAllHourly[i]);
+    poundsTotalHourly.push(temp);
+    poundsOverAll += temp;
+  }
+};
+addPoundHoursTogeather();
+console.log(poundsTotalHourly);
+console.log(poundsOverAll);
 
 var tableEl = document.getElementById('cfc-data-table');
 function buildTableHeader() {
@@ -111,9 +123,9 @@ function buildTableBody() {
     var totalThEl = document.createElement('th');
     totalThEl.textContent = coffeeShops[a].poundOverAllTotal.toFixed(2);
     hourlyTrEl.appendChild(totalThEl);
-    for (var c = 0; c < timeOpen.length; c++) {
+    for (var b = 0; b < timeOpen.length; b++) {
       var hourlyThEl = document.createElement('th');
-      hourlyThEl.textContent = coffeeShops[a].poundOverAllHourly[c].toFixed(2);
+      hourlyThEl.textContent = coffeeShops[a].poundOverAllHourly[b].toFixed(2);
       hourlyTrEl.appendChild(hourlyThEl);
     }
     tableEl.appendChild(hourlyTrEl);
