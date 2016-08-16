@@ -59,7 +59,7 @@ CoffeeShop.prototype.generatePoundPerHour = function() {
 };
 CoffeeShop.prototype.generateEmployeeNeeded = function () {
   for (var i = 0; i < timeOpen.length; i++)
-    if ((this.customerPerHour[i] / 30) >= 2) {
+    if ((this.customerPerHour[i] / 30) >= 1) {
       this.empNeeded[i] = 2;
     } else {
       this.empNeeded[i] = 1;
@@ -83,6 +83,7 @@ var renderCoffeeShops = function () {
     coffeeShopsArray[i].render();
   }
 };
+renderCoffeeShops();
 
 var poundsOverAll = 0;
 var poundsTotalHourly = [];
@@ -91,6 +92,16 @@ function addPoundHoursTogeather() {
     var temp = (pikePlaceMarket.poundOverAllHourly[i] + capitolHill.poundOverAllHourly[i] + seattlePublicLibrary.poundOverAllHourly[i] + southLakeUnion.poundOverAllHourly[i] + seaTacAirport.poundOverAllHourly[i]);
     poundsTotalHourly.push(temp);
     poundsOverAll += temp;
+  }
+};
+
+var employeesOverAll = 0;
+var employeesTotalHourly = [];
+function addEmployeeHoursTogeather() {
+  for (var i = 0; i < timeOpen.length; i++) {
+    var temp = (pikePlaceMarket.empNeeded[i] + capitolHill.empNeeded[i] + seattlePublicLibrary.empNeeded[i] + southLakeUnion.empNeeded[i] + seaTacAirport.empNeeded[i]);
+    employeesTotalHourly.push(temp);
+    employeesOverAll += temp;
   }
 };
 
@@ -159,11 +170,11 @@ function buildEmployeeTableBody() {
   var hourlyTotalsTrEl = document.createElement('tr');
   hourlyTotalsTrEl.textContent = 'Totals';
   var grandTotalThEl = document.createElement('th');
-  grandTotalThEl.textContent = 'Total Employees';
+  grandTotalThEl.textContent = employeesOverAll;
   hourlyTotalsTrEl.appendChild(grandTotalThEl);
   for (var a = 0; a < coffeeShopsArray.length; a++){
     var hourlyTrEl = document.createElement('tr');
-    hourlyTrEl.textContent = 'Total employee per hour';
+    hourlyTrEl.textContent = coffeeShopsArray[a].name;
     var totalThEl = document.createElement('th');
     totalThEl.textContent = 'Test';
     hourlyTrEl.appendChild(totalThEl);
@@ -175,12 +186,17 @@ function buildEmployeeTableBody() {
     employeeTableEl.appendChild(hourlyTrEl);
     employeeTableEl.appendChild(hourlyTotalsTrEl);
   }
+  for (var c = 0; c < timeOpen.length; c++) {
+    var hourlyTotalsThEl = document.createElement('th');
+    hourlyTotalsThEl.textContent = employeesTotalHourly[c];
+    hourlyTotalsTrEl.appendChild(hourlyTotalsThEl);
+  }
 };
 
 
 
-renderCoffeeShops();
 addPoundHoursTogeather();
+addEmployeeHoursTogeather();
 buildDataTableHeader();
 buildDataTableBody();
 buildEmployeeTableHeader();
