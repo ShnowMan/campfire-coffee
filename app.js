@@ -5,8 +5,8 @@ var timeOpen =
 '3:00pm','4:00pm','5:00pm',
 '6:00pm','7:00pm','8:00pm',];
 
-var coffeeShops = [];
-console.log(coffeeShops);
+var coffeeShopsArray = [];
+console.log(coffeeShopsArray);
 
 function CoffeeShop(name, minCustomer, maxCustomer, averageCup, averagePound) {
   this.name = name;
@@ -25,7 +25,7 @@ function CoffeeShop(name, minCustomer, maxCustomer, averageCup, averagePound) {
   this.poundToGoTotal = 0;
   this.poundOverAllTotal = 0;
   this.empNeeded = [];
-  coffeeShops.push(this);
+  coffeeShopsArray.push(this);
 };
 CoffeeShop.prototype.randomNum = function(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
@@ -59,7 +59,7 @@ CoffeeShop.prototype.generatePoundPerHour = function() {
 };
 CoffeeShop.prototype.generateEmployeeNeeded = function () {
   for (var i = 0; i < timeOpen.length; i++)
-    if ((this.customerPerHour[i] / 30) >= 1) {
+    if ((this.customerPerHour[i] / 30) >= 2) {
       this.empNeeded[i] = 2;
     } else {
       this.empNeeded[i] = 1;
@@ -79,11 +79,10 @@ var southLakeUnion = new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
 var seaTacAirport = new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 
 var renderCoffeeShops = function () {
-  for (var i = 0; i < coffeeShops.length; i++) {
-    coffeeShops[i].render();
+  for (var i = 0; i < coffeeShopsArray.length; i++) {
+    coffeeShopsArray[i].render();
   }
 };
-renderCoffeeShops();
 
 var poundsOverAll = 0;
 var poundsTotalHourly = [];
@@ -94,12 +93,9 @@ function addPoundHoursTogeather() {
     poundsOverAll += temp;
   }
 };
-addPoundHoursTogeather();
-console.log(poundsTotalHourly);
-console.log(poundsOverAll);
 
-var tableEl = document.getElementById('cfc-data-table');
-function buildTableHeader() {
+var dataTableEl = document.getElementById('cfc-data-table');
+function buildDataTableHeader() {
   var trEl = document.createElement('tr');
   var blankThEl = document.createElement('th');
   blankThEl.textContent = ' ';
@@ -112,29 +108,28 @@ function buildTableHeader() {
     hoursThEl.textContent = timeOpen[i];
     trEl.appendChild(hoursThEl);
   }
-  tableEl.appendChild(trEl);
+  dataTableEl.appendChild(trEl);
 };
-buildTableHeader();
 
-function buildTableBody() {
+function buildDataTableBody() {
   var hourlyTotalsTrEl = document.createElement('tr');
   hourlyTotalsTrEl.textContent = 'Totals';
   var grandTotalThEl = document.createElement('th');
   grandTotalThEl.textContent = poundsOverAll.toFixed(2);
   hourlyTotalsTrEl.appendChild(grandTotalThEl);
-  for (var a = 0; a < coffeeShops.length; a++){
+  for (var a = 0; a < coffeeShopsArray.length; a++){
     var hourlyTrEl = document.createElement('tr');
-    hourlyTrEl.textContent = coffeeShops[a].name;
+    hourlyTrEl.textContent = coffeeShopsArray[a].name;
     var totalThEl = document.createElement('th');
-    totalThEl.textContent = coffeeShops[a].poundOverAllTotal.toFixed(2);
+    totalThEl.textContent = coffeeShopsArray[a].poundOverAllTotal.toFixed(2);
     hourlyTrEl.appendChild(totalThEl);
     for (var b = 0; b < timeOpen.length; b++) {
       var hourlyThEl = document.createElement('th');
-      hourlyThEl.textContent = coffeeShops[a].poundOverAllHourly[b].toFixed(2);
+      hourlyThEl.textContent = coffeeShopsArray[a].poundOverAllHourly[b].toFixed(2);
       hourlyTrEl.appendChild(hourlyThEl);
     }
-    tableEl.appendChild(hourlyTrEl);
-    tableEl.appendChild(hourlyTotalsTrEl);
+    dataTableEl.appendChild(hourlyTrEl);
+    dataTableEl.appendChild(hourlyTotalsTrEl);
   }
   for (var c = 0; c < timeOpen.length; c++) {
     var hourlyTotalsThEl = document.createElement('th');
@@ -142,4 +137,51 @@ function buildTableBody() {
     hourlyTotalsTrEl.appendChild(hourlyTotalsThEl);
   }
 };
-buildTableBody();
+
+var employeeTableEl = document.getElementById('cfc-employee-table');
+function buildEmployeeTableHeader() {
+  var trEl = document.createElement('tr');
+  var blankThEl = document.createElement('th');
+  blankThEl.textContent = ' ';
+  trEl.appendChild(blankThEl);
+  var dailyLocationTotalThEl = document.createElement('th');
+  dailyLocationTotalThEl.textContent = 'Total';
+  trEl.appendChild(dailyLocationTotalThEl);
+  for (var i = 0; i < timeOpen.length; i++) {
+    var hoursThEl = document.createElement('th');
+    hoursThEl.textContent = timeOpen[i];
+    trEl.appendChild(hoursThEl);
+  }
+  employeeTableEl.appendChild(trEl);
+};
+
+function buildEmployeeTableBody() {
+  var hourlyTotalsTrEl = document.createElement('tr');
+  hourlyTotalsTrEl.textContent = 'Totals';
+  var grandTotalThEl = document.createElement('th');
+  grandTotalThEl.textContent = 'Total Employees';
+  hourlyTotalsTrEl.appendChild(grandTotalThEl);
+  for (var a = 0; a < coffeeShopsArray.length; a++){
+    var hourlyTrEl = document.createElement('tr');
+    hourlyTrEl.textContent = 'Total employee per hour';
+    var totalThEl = document.createElement('th');
+    totalThEl.textContent = 'Test';
+    hourlyTrEl.appendChild(totalThEl);
+    for (var b = 0; b < timeOpen.length; b++) {
+      var hourlyThEl = document.createElement('th');
+      hourlyThEl.textContent = coffeeShopsArray[a].empNeeded[b];
+      hourlyTrEl.appendChild(hourlyThEl);
+    }
+    employeeTableEl.appendChild(hourlyTrEl);
+    employeeTableEl.appendChild(hourlyTotalsTrEl);
+  }
+};
+
+
+
+renderCoffeeShops();
+addPoundHoursTogeather();
+buildDataTableHeader();
+buildDataTableBody();
+buildEmployeeTableHeader();
+buildEmployeeTableBody();
