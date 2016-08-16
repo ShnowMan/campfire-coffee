@@ -24,7 +24,8 @@ function CoffeeShop(name, minCustomer, maxCustomer, averageCup, averagePound) {
   this.poundsForCupsTotal = 0;
   this.poundToGoTotal = 0;
   this.poundOverAllTotal = 0;
-  this.empNeeded = [];
+  this.empNeededHourly = [];
+  this.empNeededTotal = 0;
   coffeeShopsArray.push(this);
 };
 CoffeeShop.prototype.randomNum = function(min, max) {
@@ -58,12 +59,15 @@ CoffeeShop.prototype.generatePoundPerHour = function() {
   }
 };
 CoffeeShop.prototype.generateEmployeeNeeded = function () {
-  for (var i = 0; i < timeOpen.length; i++)
+  for (var i = 0; i < timeOpen.length; i++){
     if ((this.customerPerHour[i] / 30) >= 1) {
-      this.empNeeded[i] = 2;
+      this.empNeededHourly[i] = 2;
     } else {
-      this.empNeeded[i] = 1;
+      this.empNeededHourly[i] = 1;
     }
+    var temp = (this.empNeededTotal + this.empNeededHourly[i]);
+    this.empNeededTotal = parseFloat(temp);
+  }
 };
 CoffeeShop.prototype.render = function() {
   this.generateCustomerPerHour();
@@ -99,7 +103,7 @@ var employeesOverAll = 0;
 var employeesTotalHourly = [];
 function addEmployeeHoursTogeather() {
   for (var i = 0; i < timeOpen.length; i++) {
-    var temp = (pikePlaceMarket.empNeeded[i] + capitolHill.empNeeded[i] + seattlePublicLibrary.empNeeded[i] + southLakeUnion.empNeeded[i] + seaTacAirport.empNeeded[i]);
+    var temp = (pikePlaceMarket.empNeededHourly[i] + capitolHill.empNeededHourly[i] + seattlePublicLibrary.empNeededHourly[i] + southLakeUnion.empNeededHourly[i] + seaTacAirport.empNeededHourly[i]);
     employeesTotalHourly.push(temp);
     employeesOverAll += temp;
   }
@@ -176,11 +180,11 @@ function buildEmployeeTableBody() {
     var hourlyTrEl = document.createElement('tr');
     hourlyTrEl.textContent = coffeeShopsArray[a].name;
     var totalThEl = document.createElement('th');
-    totalThEl.textContent = 'Test';
+    totalThEl.textContent = coffeeShopsArray[a].empNeededTotal;
     hourlyTrEl.appendChild(totalThEl);
     for (var b = 0; b < timeOpen.length; b++) {
       var hourlyThEl = document.createElement('th');
-      hourlyThEl.textContent = coffeeShopsArray[a].empNeeded[b];
+      hourlyThEl.textContent = coffeeShopsArray[a].empNeededHourly[b];
       hourlyTrEl.appendChild(hourlyThEl);
     }
     employeeTableEl.appendChild(hourlyTrEl);
