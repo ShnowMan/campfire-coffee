@@ -197,8 +197,6 @@ function buildEmployeeTableBody() {
   }
 };
 
-
-
 addPoundHoursTogeather();
 addEmployeeHoursTogeather();
 buildDataTableHeader();
