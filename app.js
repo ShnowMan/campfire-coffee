@@ -112,9 +112,8 @@ function addEmployeeHoursTogeather() {
 var dataTableEl = document.getElementById('cfc-data-table');
 function buildDataTableHeader() {
   var trEl = document.createElement('tr');
-  var blankThEl = document.createElement('th');
-  blankThEl.textContent = ' ';
-  trEl.appendChild(blankThEl);
+  var blankTrEl = document.createElement('tr');
+  trEl.appendChild(blankTrEl);
   var dailyLocationTotalThEl = document.createElement('th');
   dailyLocationTotalThEl.textContent = 'Daily Location Total';
   trEl.appendChild(dailyLocationTotalThEl);
@@ -156,9 +155,8 @@ function buildDataTableBody() {
 var employeeTableEl = document.getElementById('cfc-employee-table');
 function buildEmployeeTableHeader() {
   var trEl = document.createElement('tr');
-  var blankThEl = document.createElement('th');
-  blankThEl.textContent = ' ';
-  trEl.appendChild(blankThEl);
+  var blankTrEl = document.createElement('tr');
+  trEl.appendChild(blankTrEl);
   var dailyLocationTotalThEl = document.createElement('th');
   dailyLocationTotalThEl.textContent = 'Total';
   trEl.appendChild(dailyLocationTotalThEl);
