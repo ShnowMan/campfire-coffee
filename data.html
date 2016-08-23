@@ -7,12 +7,26 @@
   </head>
   <body>
 
-    <section class = 'test'>
+    <form id= "coffee-shop-locations">
+      <fieldset>
+        <legend>New Location</legend>
+        <label>Location<input type="text" id="location" name="location"></label>
+        <label>Minimum Customers<input class= "input_number" type="number" id='minCustomer' name='minCustomer'></label>
+        <label>Maximum Customers<input class= "input_number" type="number" id='maxCustomer' name='maxCustomer'></label>
+        <label>Average Cup Per Customer<input class= "input_number" type="number" id="averageCup" name="averageCup"></label>
+        <label>Average Pound Per Customer<input class= "input_number" type="number" id="averagePound" name="averagePound"></label>
+      </fieldset>
+
+      <input type="submit" id='submit'>
+    </form>
+
+    <section class = "tables">
       <h2>Beans Needed By Location Each Day</h2>
       <table id = "cfc-data-table"></table>
       <h2>Baristas Needed By Location Each Day</h2>
       <table id = "cfc-employee-table"></table>
     </section>
+
 
     <script type="text/javascript" src ='app.js'></script>
   </body>
