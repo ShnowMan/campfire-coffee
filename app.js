@@ -83,11 +83,11 @@ CoffeeShop.prototype.render = function() {
   this.generateEmployeeNeeded();
 };
 
-var pikePlaceMarket = new CoffeeShop('Pike Place Market', 14, 35, 1.2, 0.34);
-capitolHill = new CoffeeShop('Capitol Hill', 12, 28, 3.2, 0.03);
-seattlePublicLibrary = new CoffeeShop('Seattle Public Library', 9, 45, 2.6, 0.02);
-southLakeUnion = new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
-seaTacAirport = new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
+new CoffeeShop('Pike Place Market', 14, 35, 1.2, 0.34);
+new CoffeeShop('Capitol Hill', 12, 28, 3.2, 0.03);
+new CoffeeShop('Seattle Public Library', 9, 45, 2.6, 0.02);
+new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
+new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 
 var renderCoffeeShops = function () {
   for (var i = 0; i < coffeeShopsArray.length; i++) {
@@ -96,27 +96,38 @@ var renderCoffeeShops = function () {
 };
 renderCoffeeShops();
 
-var poundsOverAll = 0;
-var poundsTotalHourly = [];
-function addPoundHoursTogeather() {
-  for (var i = 0; i < timeOpen.length; i++) {
-    var temp = (pikePlaceMarket.poundOverAllHourly[i] + capitolHill.poundOverAllHourly[i] + seattlePublicLibrary.poundOverAllHourly[i] + southLakeUnion.poundOverAllHourly[i] + seaTacAirport.poundOverAllHourly[i]);
-    poundsTotalHourly.push(temp);
-    poundsOverAll += temp;
-  }
-};
-
 // var poundsOverAll = 0;
 // var poundsTotalHourly = [];
 // function addPoundHoursTogeather() {
-//   for (var a = 0; a < coffeeShopsArray.length; a++) {
-//     for (var b = 0; b < timeOpen.length; b++) {
-//       var temp = coffeeShopsArray[a].poundOverAllHourly[b];
-//       poundsOverAll += temp;
-//       poundsTotalHourly.push(temp);
-//     }
+//   for (var i = 0; i < timeOpen.length; i++) {
+//     var temp = (pikePlaceMarket.poundOverAllHourly[i] + capitolHill.poundOverAllHourly[i] + seattlePublicLibrary.poundOverAllHourly[i] + southLakeUnion.poundOverAllHourly[i] + seaTacAirport.poundOverAllHourly[i]);
+//     poundsTotalHourly.push(temp);
+//     poundsOverAll += temp;
 //   }
 // };
+
+var poundsOverAll = 0;
+var poundsTotalHourly = [];
+function addPoundHoursTogeather() {
+  for (var a = 0; a < coffeeShopsArray.length; a++) {
+    for (var b = 0; b < timeOpen.length; b++) {
+      var temp = coffeeShopsArray[a].poundOverAllHourly[b];
+      poundsOverAll += temp;
+      poundsTotalHourly.push(temp);
+    }
+  }
+};
+
+function generateHourlyPoundTotals(){
+  for (a = 0; a < timeOpen.length; a++) {
+    var hourlyPoundTotals = 0 ;
+    for (var b = 0; b < coffeeShopsArray.length; b++) {
+      var tempTotalHourlyPounds = coffeeShopsArray[b].poundOverAllHourly[a];
+      hourlyPoundTotals += tempTotalHourlyPounds;
+    }
+    poundsTotalHourly.push(hourlyPoundTotals);
+  }
+}
 
 // var employeesOverAll = 0;
 // var employeesTotalHourly = [];
@@ -133,7 +144,7 @@ var employeesOverAll = 0;
 function generateHourlyEmployeeTotals() {
   for (a = 0; a < timeOpen.length; a++) {
     var hourlyEmployeeTotals = 0;
-    for (var b = 0; b < coffeeShopsArray.length; b++) {
+    for (b = 0; b < coffeeShopsArray.length; b++) {
       var tempTotalHourlyEmployees = coffeeShopsArray[b].empNeededHourly[a];
       hourlyEmployeeTotals += tempTotalHourlyEmployees;
     }
@@ -270,6 +281,7 @@ function buildEmployeeTableBody() {
   }
 };
 
+generateHourlyPoundTotals();
 addPoundHoursTogeather();
 generateHourlyEmployeeTotals();
 addEmployeesOverAll();
