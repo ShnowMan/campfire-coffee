@@ -76,7 +76,7 @@ CoffeeShop.prototype.generateEmployeeNeeded = function () {
     this.empNeededTotal += temp;
   }
 };
-CoffeeShop.prototype.render = function() {
+CoffeeShop.prototype.generateShopInfo = function() {
   this.generateCustomerPerHour();
   this.generateCupPerHour();
   this.generatePoundPerHour();
@@ -91,7 +91,7 @@ new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 
 var renderCoffeeShops = function () {
   for (var i = 0; i < coffeeShopsArray.length; i++) {
-    coffeeShopsArray[i].render();
+    coffeeShopsArray[i].generateShopInfo();
   }
 };
 renderCoffeeShops();
@@ -161,25 +161,32 @@ function addEmployeesOverAll() {
     }
   }
 };
-
-// var locationsForm = document.getElementById('coffee-shop-locations');
-//
-// locationsForm.addEventListener('submit', function(event) {
-//   event.preventDefault();
-//   var location =event.target.location.value;
-//   var minCus = event.target.net_cost.value;
-//   var gp = event.target.gp.value;
-//
-// };
-
-
-
-
-
-
-
-
-
+function generateForm() {
+  var locationsForm = document.getElementById('coffee-shop-locations');
+  locationsForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    var location = event.target.location.value;
+    var minCus = parseFloat(event.target.minCustomer.value);
+    var maxCus = parseFloat(event.target.maxCustomer.value);
+    var aveCup = parseFloat(event.target.averageCup.value);
+    var avePou = parseFloat(event.target.averagePound.value);
+    var newStore = new CoffeeShop(location, minCus, maxCus, aveCup, avePou);
+    newStore.generateShopInfo();
+    var poundsOverAll = 0;
+    var poundsTotalHourly = [];
+    var employeesTotalHourly = [];
+    var employeesOverAll = 0;
+    clearTables();
+    buildDataTableHeader();
+    buildDataTableBody();
+    buildEmployeeTableHeader();
+    buildEmployeeTableBody();
+    generateHourlyPoundTotals();
+    addPoundHoursTogeather();
+    generateHourlyEmployeeTotals();
+    addEmployeesOverAll();
+  });
+}
 
 
 
@@ -281,11 +288,22 @@ function buildEmployeeTableBody() {
   }
 };
 
-generateHourlyPoundTotals();
-addPoundHoursTogeather();
-generateHourlyEmployeeTotals();
-addEmployeesOverAll();
-buildDataTableHeader();
-buildDataTableBody();
-buildEmployeeTableHeader();
-buildEmployeeTableBody();
+function clearTables(){
+  var poundsTableEl = document.getElementById('cfc-data-table');
+  poundsTableEl.innerHTML = '';
+  var employeeTableEl = document.getElementById('cfc-employee-table');
+  employeeTableEl.innerHTML = '';
+}
+
+function generateTables() {
+  generateHourlyPoundTotals();
+  addPoundHoursTogeather();
+  generateHourlyEmployeeTotals();
+  addEmployeesOverAll();
+  buildDataTableHeader();
+  buildDataTableBody();
+  buildEmployeeTableHeader();
+  buildEmployeeTableBody();
+};
+generateForm();
+generateTables();
