@@ -58,17 +58,6 @@ CoffeeShop.prototype.generatePoundPerHour = function() {
     this.poundOverAllTotal += totalPoundsCombined;
   }
 };
-// CoffeeShop.prototype.generateEmployeeNeeded = function () {
-//   for (var i = 0; i < timeOpen.length; i++){
-//     if ((this.customerPerHour[i] / 30) >= 1) {
-//       this.empNeededHourly[i] = 2;
-//     } else {
-//       this.empNeededHourly[i] = 1;
-//     }
-//     var temp = (this.empNeededTotal + this.empNeededHourly[i]);
-//     this.empNeededTotal = parseFloat(temp);
-//   }
-// };
 CoffeeShop.prototype.generateEmployeeNeeded = function () {
   for (var i = 0; i < timeOpen.length; i++) {
     var temp = Math.ceil(this.customerPerHour[i] / 30);
@@ -89,12 +78,12 @@ new CoffeeShop('Seattle Public Library', 9, 45, 2.6, 0.02);
 new CoffeeShop('South Lake Union', 5, 18, 1.3, 0.04);
 new CoffeeShop('Sea-Tac Airport', 28, 44, 1.1, 0.41);
 
-var renderCoffeeShops = function () {
+var generateCoffeeShops = function () {
   for (var i = 0; i < coffeeShopsArray.length; i++) {
     coffeeShopsArray[i].generateShopInfo();
   }
 };
-renderCoffeeShops();
+generateCoffeeShops();
 
 // var poundsOverAll = 0;
 // var poundsTotalHourly = [];
@@ -113,7 +102,7 @@ function addPoundHoursTogeather() {
     for (var b = 0; b < timeOpen.length; b++) {
       var temp = coffeeShopsArray[a].poundOverAllHourly[b];
       poundsOverAll += temp;
-      poundsTotalHourly.push(temp);
+      // poundsTotalHourly.push(temp);
     }
   }
 };
@@ -124,6 +113,7 @@ function generateHourlyPoundTotals(){
     for (var b = 0; b < coffeeShopsArray.length; b++) {
       var tempTotalHourlyPounds = coffeeShopsArray[b].poundOverAllHourly[a];
       hourlyPoundTotals += tempTotalHourlyPounds;
+      console.log(hourlyPoundTotals);
     }
     poundsTotalHourly.push(hourlyPoundTotals);
   }
@@ -172,26 +162,14 @@ function generateForm() {
     var avePou = parseFloat(event.target.averagePound.value);
     var newStore = new CoffeeShop(location, minCus, maxCus, aveCup, avePou);
     newStore.generateShopInfo();
-    var poundsOverAll = 0;
-    var poundsTotalHourly = [];
-    var employeesTotalHourly = [];
-    var employeesOverAll = 0;
+    poundsOverAll = 0;
+    poundsTotalHourly = [];
+    employeesTotalHourly = [];
+    employeesOverAll = 0;
     clearTables();
-    buildDataTableHeader();
-    buildDataTableBody();
-    buildEmployeeTableHeader();
-    buildEmployeeTableBody();
-    generateHourlyPoundTotals();
-    addPoundHoursTogeather();
-    generateHourlyEmployeeTotals();
-    addEmployeesOverAll();
+    generateTables();
   });
 }
-
-
-
-
-
 
 var dataTableEl = document.getElementById('cfc-data-table');
 
