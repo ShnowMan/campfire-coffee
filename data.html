@@ -3,33 +3,26 @@
   <head>
     <meta charset="utf-8">
     <title>Data for CFC</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <!-- timeOpen[0] + ': ' + pikePlaceMarket.poundOverAllHourly[0] + ' lbs [' + pikePlaceMarket.customerPerHour[0] + 'customers, ' + pikePlaceMarket.cupPerHour[0] + ' cups (' + pikePlaceMarket.poundsForCupsHourly[0] + ' lbs), ' + pikePlaceMarket.poundToGoHour[0] + ' lbs to-go]'
-          'Total customers at Pike Place Market: ' + pikePlaceMarket.customerTotal
-          'Total cups sold at Pike Place Market: ' + pikePlaceMarket.cupsTotal
-          'Total to-go pound packages sold at Pike Place Market: ' + pikePlaceMarket.poundToGoTotal
-          'Total pounds of beans needed at Pike Place Market: ' + pikePlaceMarket.poundOverAllTotal -->
-    <ul id = "pike-place-market">
-      <h3>Pike Place Market</h3>
-    </ul>
-
-    <ul id = "capitol-hill">
-      <h3>Capitol Hill</h3>
-    </ul>
-
-    <ul id = "seattle-pubilc-library">
-      <h3>Seattle Pubilc Library</h3>
-    </ul>
-
-    <ul id = "south-lake-union">
-      <h3>South Lake Union</h3>
-    </ul>
-
-    <ul id = "seatac-airport">
-      <h3>Sea-Tac Airport</h3>
-    </ul>
-
+    <form id= "coffee-shop-locations">
+      <fieldset>
+        <legend>New Location</legend>
+        <label>Location<input type="text" id="location" name="location"></label>
+        <label>Minimum Customers<input class= "input_number" type="text" id='minCustomer' name='minCustomer'></label>
+        <label>Maximum Customers<input class= "input_number" type="text" id='maxCustomer' name='maxCustomer'></label>
+        <label>Average Cup Per Customer<input class= "input_number" type="text" id="averageCup" name="averageCup"></label>
+        <label>Average Pound Per Customer<input class= "input_number" type="text" id="averagePound" name="averagePound"></label>
+      </fieldset>
+      <input type="submit" id='submit'>
+    </form>
+    <section class = "tables">
+      <h2>Beans Needed By Location Each Day</h2>
+      <table id = "cfc-data-table"></table>
+      <h2>Baristas Needed By Location Each Day</h2>
+      <table id = "cfc-employee-table"></table>
+    </section>
     <script type="text/javascript" src ='app.js'></script>
   </body>
 </html>
