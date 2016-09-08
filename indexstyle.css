@@ -6,12 +6,15 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: darkblue;
-  color: white;
+  background-color: #EAD7AB;
+  color: #693F1A;
   width: 80%;
+  background-image: url(Pics/Background-tile.png);
 }
 
 header {
+  border: solid 1px #693F1A;
+  background-color: #EAD7AB;
   width: 70%;
   display: flex;
   flex-direction: row;
@@ -39,6 +42,7 @@ p {
 }
 
 #graphic-one{
+  padding: 10px;
   width: 115px;
   height: 69px;
 }
